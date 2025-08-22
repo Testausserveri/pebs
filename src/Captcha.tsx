@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import ChallengeDialog from './ChallengeDialog';
+import logo from './assets/logo.svg';
 
 const Recaptcha = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -69,7 +70,7 @@ const Recaptcha = () => {
         onMouseLeave={() => setIsHovered(false)}
         onClick={handleInteraction}
       >
-        <div id="recaptcha-accessible-status" className="rc-anchor-aria-status" aria-hidden="true">Recaptcha requires verification.</div>
+        <div id="recaptcha-accessible-status" className="rc-anchor-aria-status" aria-hidden="true">sensiCAPTCHA requires verification.</div>
         <div className="rc-anchor-error-msg-container" style={{ display: 'none' }}><span className="rc-anchor-error-msg" aria-hidden="true"></span></div>
         
         <div className="rc-anchor-content">
@@ -104,13 +105,15 @@ const Recaptcha = () => {
 
         <div className="rc-anchor-normal-footer">
           <div className="rc-anchor-logo-portrait" aria-hidden="true" role="presentation">
-            <div className="rc-anchor-logo-img rc-anchor-logo-img-portrait"></div>
-            <div className="rc-anchor-logo-text">reCAPTCHA</div>
+            <div className="rc-anchor-logo-img rc-anchor-logo-img-portrait">
+              <img src={logo} alt="sensiCAPTCHA logo" style={{ width: '24px', height: '24px' }} />
+            </div>
+            <div className="rc-anchor-logo-text">sensiCAPTCHA</div>
           </div>
           <div className="rc-anchor-pt">
-            <a href="https://www.google.com/intl/en/policies/privacy/" target="_blank" rel="noopener noreferrer">Privacy</a>
+            <a href="#" rel="noopener noreferrer">Privacy</a>
             <span aria-hidden="true" role="presentation"> - </span>
-            <a href="https://www.google.com/intl/en/policies/terms/" target="_blank" rel="noopener noreferrer">Terms</a>
+            <a href="#" rel="noopener noreferrer">Terms</a>
           </div>
         </div>
       </div>

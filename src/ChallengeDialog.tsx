@@ -8,11 +8,12 @@ interface ChallengeDialogProps {
   isOpen: boolean;
   onClose: () => void;
   onComplete: (success: boolean) => void;
+  totalSteps?: number;
 }
 
 type ChallengeStep = 'connect' | 'ready' | 'challenge' | 'interphase' | 'complete';
 
-const ChallengeDialog: React.FC<ChallengeDialogProps> = ({ isOpen, onClose, onComplete }) => {
+const ChallengeDialog: React.FC<ChallengeDialogProps> = ({ isOpen, onClose, onComplete, totalSteps = 6 }) => {
   const [connecting, setConnecting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [currentStep, setCurrentStep] = useState<ChallengeStep>('connect');
@@ -75,7 +76,7 @@ const ChallengeDialog: React.FC<ChallengeDialogProps> = ({ isOpen, onClose, onCo
       setPoints(prev => prev + 1);
     }
 
-    if (currentChallenge < 2) {
+    if (currentChallenge < totalSteps - 1) {
       setIsInterphase(true);
       setCompletedSteps(prev => [...prev, currentChallenge]);
       
@@ -101,7 +102,7 @@ const ChallengeDialog: React.FC<ChallengeDialogProps> = ({ isOpen, onClose, onCo
 
       // Play victory or punishment vibration pattern
       const bluetoothService = BluetoothService.getInstance();
-      if (finalPoints > 1) {
+      if (finalPoints > totalSteps / 2) {
         // Victory pattern: on/off/on/off/on/off
         const playVictoryPattern = async () => {
           await bluetoothService.setVibration(19);
@@ -128,17 +129,17 @@ const ChallengeDialog: React.FC<ChallengeDialogProps> = ({ isOpen, onClose, onCo
   function renderStepIndicator() {
     return (
       <div className="step-indicator" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px' }}>
-        {[0, 1, 2].map((step) => (
+        {Array.from({ length: totalSteps }, (_, i) => i).map((step) => (
           <React.Fragment key={step}>
             <div
               style={{
-                width: '12px',
-                height: '12px',
+                width: '25px',
+                height: '25px',
                 borderRadius: '50%',
                 backgroundColor: step <= currentChallenge ? '#007bff' : '#ccc',
               }}
             />
-            {step < 2 && (
+            {step < totalSteps - 1 && (
               <div style={{ display: 'flex', gap: '4px' }}>
                 {[0, 1, 2].map((dot) => (
                   <div
@@ -168,7 +169,7 @@ const ChallengeDialog: React.FC<ChallengeDialogProps> = ({ isOpen, onClose, onCo
       case 'challenge':
         return isInterphase ? 'Valmistaudu seuraavaan' : 'Suriseeko?';
       case 'complete':
-        return points <= 1 ? 'Rangaistussurina' : 'Palkintosurina';
+        return points <= totalSteps / 2 ? 'Rangaistussurina' : 'Palkintosurina';
       default:
         return '';
     }
@@ -265,7 +266,7 @@ const ChallengeDialog: React.FC<ChallengeDialogProps> = ({ isOpen, onClose, onCo
       case 'ready':
         return 'ALOITA';
       case 'complete':
-        return points > 1 ? 'K-KIITOS' : 'AUTSS';
+        return points > totalSteps / 2 ? 'K-KIITOS' : 'AUTSS';
       default:
         return null;
     }
@@ -281,8 +282,8 @@ const ChallengeDialog: React.FC<ChallengeDialogProps> = ({ isOpen, onClose, onCo
         startChallenge();
         break;
       case 'complete':
-        console.log(`Challenge completed! Points: ${points} / 3`);
-        onComplete(points > 1);
+        console.log(`Challenge completed! Points: ${points} / ${totalSteps}`);
+        onComplete(points > totalSteps / 2);
         onClose();
         break;
       default:

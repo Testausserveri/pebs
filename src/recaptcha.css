@@ -398,12 +398,11 @@ body {
 }
 
 .rc-anchor-logo-img {
-    background: url(https://www.gstatic.com/recaptcha/api2/logo_48.png);
-    background-repeat:no-repeat
+    display: none;
 }
 
 .rc-anchor-logo-img-ie8 {
-    filter: progid: DXImageTransform.Microsoft.AlphaImageLoader(src=concat(common.$recaptcha-gstatic, "/recaptcha/api2/logo_48.png"), sizingMethod="scale")
+    display: none;
 }
 
 .rc-anchor-logo-text {
@@ -413,7 +412,7 @@ body {
     font-weight: 400;
     line-height: 10px;
     margin-top: 5px;
-    text-align:center
+    text-align: center;
 }
 
 .rc-anchor-light .rc-anchor-logo-text, .rc-anchor-light div a:link, .rc-anchor-light div a:visited {
@@ -429,15 +428,20 @@ body {
     width: 58px;
     -webkit-user-select: none;
     -moz-user-select: none;
-    -ms-user-select:none
+    -ms-user-select: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .rc-anchor-logo-img-portrait {
-    -webkit-background-size: 32px 32px;
-    background-size: 32px;
+    transform: scale(1.4);
     height: 32px;
-    margin: 0 13px 0 13px;
-    width:32px
+    width: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
 }
 
 .rc-anchor-logo-landscape {
@@ -485,7 +489,7 @@ body {
 }
 
 .rc-anchor-normal .rc-anchor-pt {
-    margin: 2px 11px 0 0;
+    margin: 2px 8px 0 0;
     padding-right: 2px;
     position: absolute;
     right: 0;
