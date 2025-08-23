@@ -116,14 +116,31 @@ class BluetoothService {
     public async setVibration(level: number): Promise<void> {
         if (!this.device?.writeCharacteristic) return;
 
-        const VIBRATION_LEVELS = {
-            0:[0,0,0,0,0,0,0,0,0,0,0,0],
-            10:[0,11,9,0,0,0,0,11,9,0,0,0],
-            19:[0,20,0,0,0,0,0,20,0,0,0,0]
-        };
+        const VIBRATION_LEVELS = [
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 2, 18, 0, 0, 0, 0, 2, 18, 0, 0, 0],
+            [0, 3, 17, 0, 0, 0, 0, 3, 17, 0, 0, 0],
+            [0, 4, 16, 0, 0, 0, 0, 4, 16, 0, 0, 0],
+            [0, 5, 15, 0, 0, 0, 0, 5, 15, 0, 0, 0],
+            [0, 6, 14, 0, 0, 0, 0, 6, 14, 0, 0, 0],
+            [0, 7, 13, 0, 0, 0, 0, 7, 13, 0, 0, 0],
+            [0, 8, 12, 0, 0, 0, 0, 8, 12, 0, 0, 0],
+            [0, 9, 11, 0, 0, 0, 0, 9, 11, 0, 0, 0],
+            [0, 10, 10, 0, 0, 0, 0, 10, 10, 0, 0, 0],
+            [0, 11, 9, 0, 0, 0, 0, 11, 9, 0, 0, 0],
+            [0, 12, 8, 0, 0, 0, 0, 12, 8, 0, 0, 0],
+            [0, 13, 7, 0, 0, 0, 0, 13, 7, 0, 0, 0],
+            [0, 14, 6, 0, 0, 0, 0, 14, 6, 0, 0, 0],
+            [0, 15, 5, 0, 0, 0, 0, 15, 5, 0, 0, 0],
+            [0, 16, 4, 0, 0, 0, 0, 16, 4, 0, 0, 0],
+            [0, 17, 3, 0, 0, 0, 0, 17, 3, 0, 0, 0],
+            [0, 18, 2, 0, 0, 0, 0, 18, 2, 0, 0, 0],
+            [0, 19, 1, 0, 0, 0, 0, 19, 1, 0, 0, 0],
+            [0, 20, 0, 0, 0, 0, 0, 20, 0, 0, 0, 0]
+        ];
 
         try {
-            const levelData = VIBRATION_LEVELS[level as keyof typeof VIBRATION_LEVELS] || VIBRATION_LEVELS[0];
+            const levelData = VIBRATION_LEVELS[level] || VIBRATION_LEVELS[0];
             const [p1_params, p2_params] = [levelData.slice(0, 6), levelData.slice(6, 12)];
             
             const buildMotorConfigCommand = (motorChar: string, params: number[]) => 
@@ -139,14 +156,16 @@ class BluetoothService {
             ];
 
             await this.device.writeCharacteristic.writeValue(cmd_p1);
-            await new Promise(resolve => setTimeout(resolve, 150));
+            await new Promise(resolve => setTimeout(resolve, 1));
             await this.device.writeCharacteristic.writeValue(cmd_p2);
-            await new Promise(resolve => setTimeout(resolve, 150));
+            await new Promise(resolve => setTimeout(resolve, 1));
             await this.device.writeCharacteristic.writeValue(cmd_activate);
         } catch (error) {
             console.error('Error setting vibration:', error);
         }
     }
+
+    
 }
 
 export default BluetoothService;

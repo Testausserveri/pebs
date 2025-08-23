@@ -106,9 +106,9 @@ const Recaptcha = () => {
         <div className="rc-anchor-normal-footer">
           <div className="rc-anchor-logo-portrait" aria-hidden="true" role="presentation">
             <div className="rc-anchor-logo-img rc-anchor-logo-img-portrait">
-              <img src={logo} alt="sensiCAPTCHA logo" style={{ width: '24px', height: '24px' }} />
+              <img src={logo} alt="vibraCAPTCHA logo" style={{ width: '24px', height: '24px' }} />
             </div>
-            <div className="rc-anchor-logo-text">sensiCAPTCHA</div>
+            <div className="rc-anchor-logo-text">vibraCAPTCHA</div>
           </div>
           <div className="rc-anchor-pt">
             <a href="#" rel="noopener noreferrer">Privacy</a>

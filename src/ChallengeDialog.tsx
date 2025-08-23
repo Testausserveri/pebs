@@ -3,6 +3,7 @@ import BluetoothService from './services/BluetoothService';
 import disconnectedIcon from './assets/disconnected.svg';
 import connectedIcon from './assets/connected.svg';
 import prizeIcon from './assets/prize.svg';
+import vibrGif from './assets/vibr.gif';
 
 interface ChallengeDialogProps {
   isOpen: boolean;
@@ -22,10 +23,19 @@ const ChallengeDialog: React.FC<ChallengeDialogProps> = ({ isOpen, onClose, onCo
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
   const [points, setPoints] = useState(0);
   const [isVibrating, setIsVibrating] = useState(false);
-
   useEffect(() => {
     if (!isOpen) {
       // Reset state when dialog closes
+      setCurrentStep('connect');
+      setCurrentChallenge(0);
+      setIsInterphase(false);
+      setError(null);
+    }
+  }, [isOpen]);
+
+  // Reset state when dialog closes
+  useEffect(() => {
+    if (!isOpen) {
       setCurrentStep('connect');
       setCurrentChallenge(0);
       setIsInterphase(false);
@@ -46,6 +56,11 @@ const ChallengeDialog: React.FC<ChallengeDialogProps> = ({ isOpen, onClose, onCo
       const success = await bluetoothService.connect();
       
       if (success) {
+        const bluetoothService = BluetoothService.getInstance();
+        await bluetoothService.setVibration(5);
+        await new Promise(resolve => setTimeout(resolve, 200));
+        await bluetoothService.setVibration(0);
+        
         setCurrentStep('ready');
       } else {
         setError('Failed to connect to device');
@@ -98,24 +113,63 @@ const ChallengeDialog: React.FC<ChallengeDialogProps> = ({ isOpen, onClose, onCo
       }
       const finalPoints = points + (isCorrect ? 1 : 0);
       setPoints(finalPoints);
+      setCompletedSteps(prev => [...prev, currentChallenge]);
       setCurrentStep('complete');
 
       // Play victory or punishment vibration pattern
       const bluetoothService = BluetoothService.getInstance();
       if (finalPoints > totalSteps / 2) {
-        // Victory pattern: on/off/on/off/on/off
+        // Victory pattern: cheerful melody with smooth transitions
         const playVictoryPattern = async () => {
-          await bluetoothService.setVibration(19);
-          await new Promise(resolve => setTimeout(resolve, 800));
-          await bluetoothService.setVibration(0);
+          // Start with gentle build-up
+          for (let i = 2; i <= 8; i += 2) {
+            await bluetoothService.setVibration(i);
+            await new Promise(resolve => setTimeout(resolve, 100));
+          }
+          
+          // First happy note
+          await bluetoothService.setVibration(12);
           await new Promise(resolve => setTimeout(resolve, 400));
-          await bluetoothService.setVibration(19);
-          await new Promise(resolve => setTimeout(resolve, 800));
-          await bluetoothService.setVibration(0);
+          await bluetoothService.setVibration(6);
+          await new Promise(resolve => setTimeout(resolve, 200));
+          
+          // Second happy note (higher)
+          await bluetoothService.setVibration(15);
           await new Promise(resolve => setTimeout(resolve, 400));
+          await bluetoothService.setVibration(8);
+          await new Promise(resolve => setTimeout(resolve, 200));
+          
+          // Third happy note (highest)
+          await bluetoothService.setVibration(19);
+          await new Promise(resolve => setTimeout(resolve, 400));
+          await bluetoothService.setVibration(10);
+          await new Promise(resolve => setTimeout(resolve, 200));
+          
+          // Playful wave pattern
+          for (let wave = 0; wave < 2; wave++) {
+            for (let i = 4; i <= 16; i += 4) {
+              await bluetoothService.setVibration(i);
+              await new Promise(resolve => setTimeout(resolve, 150));
+            }
+            for (let i = 16; i >= 4; i -= 4) {
+              await bluetoothService.setVibration(i);
+              await new Promise(resolve => setTimeout(resolve, 150));
+            }
+          }
+          
+          // Grand finale
+          await bluetoothService.setVibration(19);
+          await new Promise(resolve => setTimeout(resolve, 600));
+          await bluetoothService.setVibration(10);
+          await new Promise(resolve => setTimeout(resolve, 300));
           await bluetoothService.setVibration(19);
           await new Promise(resolve => setTimeout(resolve, 800));
-          await bluetoothService.setVibration(0);
+          
+          // Gentle fade out
+          for (let i = 16; i >= 0; i -= 4) {
+            await bluetoothService.setVibration(i);
+            await new Promise(resolve => setTimeout(resolve, 100));
+          }
         };
         playVictoryPattern();
       } else {
@@ -169,7 +223,7 @@ const ChallengeDialog: React.FC<ChallengeDialogProps> = ({ isOpen, onClose, onCo
       case 'challenge':
         return isInterphase ? 'Valmistaudu seuraavaan' : 'Suriseeko?';
       case 'complete':
-        return points <= totalSteps / 2 ? 'Rangaistussurina' : 'Palkintosurina';
+        return points <= totalSteps / 2 ? 'Rangaistussurina' : 'Nautinnollista kliimaksia';
       default:
         return '';
     }
@@ -227,16 +281,30 @@ const ChallengeDialog: React.FC<ChallengeDialogProps> = ({ isOpen, onClose, onCo
             padding: '20px',
             minHeight: '200px'
           }}>
-            <img 
-              src={prizeIcon} 
-              alt="Complete" 
-              style={{ 
-                width: '143px', 
-                height: '143px',
-                animation: 'shake 0.5s cubic-bezier(.36,.07,.19,.97) infinite',
-                transformOrigin: '50% 50%'
-              }} 
-            />
+            {points > totalSteps / 2 ? (
+              <>
+                <img 
+                  src={vibrGif}
+                  alt="Complete" 
+                  style={{ 
+                    width: '143px', 
+                    height: '143px',
+                    transform: 'scale(1.4)'
+                  }} 
+                />
+              </>
+            ) : (
+              <img 
+                src={prizeIcon} 
+                alt="Complete" 
+                style={{ 
+                  width: '143px', 
+                  height: '143px',
+                  animation: 'shake 0.5s cubic-bezier(.36,.07,.19,.97) infinite',
+                  transformOrigin: '50% 50%'
+                }} 
+              />
+            )}
             <style>
               {`
                 @keyframes shake {
@@ -283,6 +351,7 @@ const ChallengeDialog: React.FC<ChallengeDialogProps> = ({ isOpen, onClose, onCo
         break;
       case 'complete':
         console.log(`Challenge completed! Points: ${points} / ${totalSteps}`);
+        // Set CAPTCHA state and close dialog only when button is clicked
         onComplete(points > totalSteps / 2);
         onClose();
         break;
