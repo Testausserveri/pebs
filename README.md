@@ -12,7 +12,7 @@ Traditional CAPTCHAs, with their text-based and visual puzzles, are becoming inc
 
 [Slide deck and demo (Google Slides)](https://docs.google.com/presentation/d/18wesOPSlhzWRBn56gyQ_SxO8Y_GMv2EtYghF1h4MKME/edit?usp=sharing)
 
-Live version running at [pebs.vercel.app](https://pebs.vercel.app). 
+Live version running at [vibracaptcha.testausserveri.fi](https://vibracaptcha.testausserveri.fi). 
 
 <div align="center">
 <img src="public/screenshot.png">
