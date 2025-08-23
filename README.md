@@ -1,69 +1,37 @@
-# React + TypeScript + Vite
+# vibraCAPTCHA
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An alternative CAPTCHA solution that uses [Web Bluetooth API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Bluetooth_API) to validate human users by buzzing a remote vibrator. A project submission for the Stupid Hack 2025 hackathon.
 
-Currently, two official plugins are available:
+<center>
+<img src="src/assets/logo-animated.gif" height="200">
+</center>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Traditional CAPTCHAs, with their text-based and visual puzzles, are becoming increasingly ineffective. Modern AI models like ChatGPT can now solve them with ease, rendering them useless as a security measure. The fundamental limitation for bots, however, is not a lack of vision or text recognition—it's the inability to experience physical sensations.
 
-## Expanding the ESLint configuration
+**vibraCAPTCHA** turns this limitation into a security feature. The system prompts the user to connect a Bluetooth-enabled vibrator, which then administers a series of physical "buzzes." The user's response is validated by how they answer questions about the sensations, a task only a human can perform correctly.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+[Slide deck and demo (Google Slides)](https://docs.google.com/presentation/d/18wesOPSlhzWRBn56gyQ_SxO8Y_GMv2EtYghF1h4MKME/edit?usp=sharing)
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Live version running at [pebs.vercel.app](https://pebs.vercel.app). 
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+<center>
+<img src="public/screenshot.png">
+</center>
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 🏆 Award-winning solution
+Winner of the Stupid Hack 2025 hackathon.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🦓 Features
+- **Web Bluetooth API Implementation:** Connects directly to compatible devices from your browser.
+- **Chrome Extension:** Replaces existing CAPTCHAs on websites with the vibraCAPTCHA solution.
+- **The Climax:** The final vibration pattern is a celebratory climax, giving users a satisfying, affirmative cue that their humanity has been successfully validated.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 🦒 Supported devices
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- IMTOY Zoo Dolphin
+- IMTOY Zoo Gazella
+- IMTOY Zoo Giraffe
+- IMTOY Zoo Manta Ray
+- IMTOY Zoo Rhinoceros
+- IMTOY Zoo Whale
+
