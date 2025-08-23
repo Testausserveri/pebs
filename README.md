@@ -2,9 +2,9 @@
 
 An alternative CAPTCHA solution that uses [Web Bluetooth API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Bluetooth_API) to validate human users by buzzing a remote vibrator. A project submission for the Stupid Hack 2025 hackathon.
 
-<center>
-<img src="src/assets/logo-animated.gif" height="200">
-</center>
+<div align="center">
+<img src="src/assets/logo-animated.gif" height="300" width="300">
+</div>
 
 Traditional CAPTCHAs, with their text-based and visual puzzles, are becoming increasingly ineffective. Modern AI models like ChatGPT can now solve them with ease, rendering them useless as a security measure. The fundamental limitation for bots, however, is not a lack of vision or text recognition—it's the inability to experience physical sensations.
 
@@ -14,9 +14,9 @@ Traditional CAPTCHAs, with their text-based and visual puzzles, are becoming inc
 
 Live version running at [pebs.vercel.app](https://pebs.vercel.app). 
 
-<center>
+<div align="center">
 <img src="public/screenshot.png">
-</center>
+</div>
 
 ## 🏆 Award-winning solution
 Winner of the Stupid Hack 2025 hackathon.
